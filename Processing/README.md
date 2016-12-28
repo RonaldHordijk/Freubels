@@ -1,7 +1,7 @@
 # Freubels/Processing 
 [Processing](https://processing.org/) <br>
 Simple to get started mostle meant for sketches.
-Has javascript and andriod output.
+Has Javascript and Andriod output.
 
 * Cube - Just a simple cube. How to do 3D
-* Cubes - A grid of cubes, changing size. Preformance test 
+* Cubes - A grid of cubes, changing size. Performance test 
