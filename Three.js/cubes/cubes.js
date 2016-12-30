@@ -1,7 +1,6 @@
 var scene;
 var camera;
 var renderer;
-var stats; 
 var cubes = [];
 const nrCubesXY = 30;
 const nrCubesZ = 1;
@@ -13,23 +12,23 @@ function start()
 
 function init()
 {
-  initStats();
+  statsInit();
   window.addEventListener('resize', onResize, false);
-  
+
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
   setupScene();
-    
+
   renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0x333377);
   renderer.setSize( window.innerWidth, window.innerHeight );
   renderer.antialias = true;
   document.getElementById("Canvas")
     .appendChild(renderer.domElement);
-  
+
   render();
-}  
+}
 
 function initStats() {
   stats = new Stats();
@@ -41,11 +40,11 @@ function initStats() {
     .appendChild( stats.domElement );
      return stats;
 }
-  
+
 function setupScene()
-{  
+{
   let material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
-  
+
   for (let x = 0; x < nrCubesXY; x++)
   {
     for (let y = 0; y < nrCubesXY; y++)
@@ -63,8 +62,8 @@ function setupScene()
   }
   var spotLight = new THREE.SpotLight( 0xffffff );
   spotLight.position.set( -40, 120, 90 );
-  scene.add( spotLight );  
-  scene.add(new THREE.AmbientLight( 0x404040 )); 
+  scene.add( spotLight );
+  scene.add(new THREE.AmbientLight( 0x404040 ));
 }
 
 function onResize() {
@@ -78,8 +77,8 @@ var lastSquareUpdateTime = undefined;
 
 var render = function () {
   requestAnimationFrame(render);
-  stats.update();
-  
+  statsUpdate();
+
   let currentTime = Date.now();
   if (lastSquareUpdateTime) {
     let delta = currentTime - lastSquareUpdateTime;
@@ -91,20 +90,20 @@ var render = function () {
       object.cube.scale.set(scaleValue, scaleValue, scaleValue);
     });
   }
-  
-  lastSquareUpdateTime = currentTime;  
+
+  lastSquareUpdateTime = currentTime;
 
   let centerXY = 0.5 * (nrCubesXY - 1);
   let centerZ = 0.5 * (nrCubesZ - 1);
   let dist = 2.5 * Math.max(centerXY, 2 * centerZ);
 
- 
+
   camera.position.x = centerXY + dist * Math.sin(squareRotation);
   camera.position.y = centerXY + dist * Math.cos(squareRotation);
   camera.position.z = centerZ + 0.23 * dist;
-  camera.up = new THREE.Vector3(0.0, 0.0, 1.0);    
-  camera.lookAt(new THREE.Vector3(centerXY, centerXY, centerZ));    
-  
+  camera.up = new THREE.Vector3(0.0, 0.0, 1.0);
+  camera.lookAt(new THREE.Vector3(centerXY, centerXY, centerZ));
+
   renderer.render(scene, camera);
 };
 
