@@ -13,6 +13,5 @@ function statsInit() {
 
   statsUpdate = function update() {
     stats.update();
-  }
+  };
 }
-

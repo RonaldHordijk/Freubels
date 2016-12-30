@@ -2,12 +2,16 @@ var scene;
 var camera;
 var renderer;
 var cubes = [];
-const nrCubesXY = 30;
-const nrCubesZ = 1;
+
+let settings = {
+  antialias: true,
+  nrCubesXY: 10,
+  nrCubesZ: 1
+};
 
 function start()
 {
-  init()
+  init();
 }
 
 function init()
@@ -16,40 +20,41 @@ function init()
   window.addEventListener('resize', onResize, false);
 
   scene = new THREE.Scene();
-  camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
 
   setupScene();
 
   renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(0x333377);
-  renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.antialias = true;
   document.getElementById("Canvas")
     .appendChild(renderer.domElement);
 
   render();
+
+  var gui = new dat.GUI();
+  gui.add(settings, 'antialias');
+  gui.add(settings, 'nrCubesXY', 1, 50).step(1).onChange(()=>{rebuildScene();});
+  gui.add(settings, 'nrCubesZ', 1, 10).step(1).onChange(()=>{rebuildScene();});
 }
 
-function initStats() {
-  stats = new Stats();
-  stats.setMode(0);
-  stats.domElement.style.position = 'absolute';
-  stats.domElement.style.left = '0px';
-  stats.domElement.style.top = '0px';
-  document.getElementById("Stats-output")
-    .appendChild( stats.domElement );
-     return stats;
+function rebuildScene()
+{
+  scene = new THREE.Scene();
+  cubes = [];
+  setupScene();
 }
 
 function setupScene()
 {
-  let material = new THREE.MeshLambertMaterial( { color: 0x00ff00 } );
+  let material = new THREE.MeshLambertMaterial({color: 0x00ff00});
 
-  for (let x = 0; x < nrCubesXY; x++)
+  for (let x = 0; x < settings.nrCubesXY; x++)
   {
-    for (let y = 0; y < nrCubesXY; y++)
+    for (let y = 0; y < settings.nrCubesXY; y++)
     {
-      for (let z = 0; z < nrCubesZ; z++)
+      for (let z = 0; z < settings.nrCubesZ; z++)
       {
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );
         let cube = new THREE.Mesh( geometry, material);
@@ -93,10 +98,9 @@ var render = function () {
 
   lastSquareUpdateTime = currentTime;
 
-  let centerXY = 0.5 * (nrCubesXY - 1);
-  let centerZ = 0.5 * (nrCubesZ - 1);
+  let centerXY = 0.5 * (settings.nrCubesXY - 1);
+  let centerZ = 0.5 * (settings.nrCubesZ - 1);
   let dist = 2.5 * Math.max(centerXY, 2 * centerZ);
-
 
   camera.position.x = centerXY + dist * Math.sin(squareRotation);
   camera.position.y = centerXY + dist * Math.cos(squareRotation);
@@ -104,6 +108,7 @@ var render = function () {
   camera.up = new THREE.Vector3(0.0, 0.0, 1.0);
   camera.lookAt(new THREE.Vector3(centerXY, centerXY, centerZ));
 
+  renderer.antialias = settings.antialias;
   renderer.render(scene, camera);
 };
 
