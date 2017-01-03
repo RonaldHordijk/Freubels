@@ -23,7 +23,7 @@ function start() {
 
     initShaders();
     initBuffers();
-    setInterval(drawScene, 15);
+    requestAnimationFrame(drawScene);
   }
 }
 
@@ -247,7 +247,6 @@ var lastSquareUpdateTime = undefined;
 function drawScene() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  canvas = document.getElementById("glcanvas");
   perspectiveMatrix = makePerspective(45, canvas.clientWidth/canvas.clientHeight, 0.1, 100.0);
 
   loadIdentity();
@@ -280,6 +279,8 @@ function drawScene() {
   gl.drawElements(gl.TRIANGLES, 36, gl.UNSIGNED_SHORT, 0);
 
   mvPopMatrix();
+
+  requestAnimationFrame(drawScene);
 }
 
 //
