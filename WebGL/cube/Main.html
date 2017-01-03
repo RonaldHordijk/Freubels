@@ -4,8 +4,10 @@
     <title>Cube</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     	<style type="text/css">
-		   #Canvas {
-		    	width: 100%;
+		   #glcanvas {
+        width: 100vw;
+        height: 100vh;
+        display: block;
 	  	 }
   	</style>
     <script type="text/JavaScript" src="../lib/sylvester.js"></script>
@@ -49,10 +51,8 @@
   </head>
 
   <body onload="start()">
-    <div id="Canvas">
     <canvas id="glcanvas" >
       Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
     </canvas>
-    </div>
   </body>
 </html>
